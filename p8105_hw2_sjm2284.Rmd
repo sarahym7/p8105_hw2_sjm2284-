@@ -20,7 +20,8 @@ Loading the dataset, cleaning names and selecting columns, converting character 
   janitor::clean_names() %>% 
   relocate(line:entry, ada,vending) %>% 
   select(-division:-entrance_location) %>% 
-  select(order(colnames(.))) 
+  select(order(colnames(.))) %>% 
+  mutate(entry = ifelse(entry == "YES", TRUE, FALSE))
 
 ```
 

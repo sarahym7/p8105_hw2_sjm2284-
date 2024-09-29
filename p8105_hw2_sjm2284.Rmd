@@ -19,7 +19,7 @@ Loading the dataset, cleaning names and selecting columns, converting character 
   read_csv("./data/NYC_Transit_Subway_Entrance_AND_EXIT_DATA.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
   relocate(line:entry, ada,vending) %>% 
-  select(-division:-entrance_location) %>% 
+  select(-division:-entrance_location, station_location) %>% 
   mutate(entry = ifelse(entry == "YES", TRUE, FALSE)) %>% 
   mutate(across(starts_with("route"), as.character)) %>% 
   pivot_longer(
@@ -27,11 +27,14 @@ Loading the dataset, cleaning names and selecting columns, converting character 
     names_to = "train_route",
     values_to = "routes",
     values_drop_na = TRUE
-  )
+  ) %>% 
+  relocate(station_name,station_location,train_route, routes,line,entrance_type, entry,ada,vending)
 
 ```
 
-This dataset contains the variables ada, entrance type, entry, line routes, station line, station lat, station long, and station name. This 
+This dataset contains the variables  station name, station location, train route number, routes,line, entrance type, entry, ada, station lat, and station long. I cleaned my data by using clean names to fix the variable names, relocated the order of my variables for legibility, selected my columns/ data of interest, mutated the character variables from entry to logical, mutates the names of the routes as characters because it wasn't allowing me to run the pivot function , then used the pivot_longer to tidy the data and combine route numbers to one column  and assign the routes their own column with the station, and relocated again for legibility.  
+
+
 
 
 

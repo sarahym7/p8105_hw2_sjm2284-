@@ -5,3 +5,15 @@ date: "09-29-2024"
 output: github_document
 ---
 
+Libraries Used for this HW
+```{r}
+library(tidyverse)
+
+```
+
+Loading the dataset 
+
+```{r}
+NYC_transit = read_csv("./data/NYC_Transit_Subway_Entrance_AND_EXIT_DATA.csv", na = c("NA", ".", ""))
+```
+

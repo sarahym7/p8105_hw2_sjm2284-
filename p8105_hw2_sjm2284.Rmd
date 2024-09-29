@@ -1,0 +1,7 @@
+---
+title: "Homework 2"
+author: "Sarahy Martinez"
+date: "09-29-2024"
+output: github_document
+---
+

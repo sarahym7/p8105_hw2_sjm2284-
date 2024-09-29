@@ -21,6 +21,7 @@ library(tidyr)
   relocate(line:entry, ada,vending) %>% 
   select(-division:-entrance_location, station_location, exit_only) %>% 
   mutate(entry = ifelse(entry == "YES", TRUE, FALSE)) %>% 
+  mutate(exit_only = ifelse( exit_only == "Yes", TRUE, FALSE)) %>% 
   mutate(across(starts_with("route"), as.character)) %>% 
   pivot_longer(
     route1:route11,

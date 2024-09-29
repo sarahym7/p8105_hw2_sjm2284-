@@ -45,13 +45,24 @@ count(filter(NYC_transit, ada == TRUE))
 
 count(filter(NYC_transit, entry == TRUE, vending == FALSE))
 
+A_train =
+  NYC_transit %>% 
+  filter(route_name == "A") %>% 
+  distinct(station_name) 
+nrow(A_train)
 
+A_train_ada =
+  NYC_transit %>% 
+  filter(route_name == "A", ada== TRUE) %>% 
+  distinct(station_name) 
+nrow(A_train_ada)
+ 
 ```
 
 * There are 465 distinct stations.
 * There are 1,616 stations that are ADA compliant. 
 * There are a total of 139 stations entrances/ exits without vending that allow entrance, its proportion is 1. 
-
+* There are 56 stations that serve the A train, and 16 are ADA compliant. 
 
 
 

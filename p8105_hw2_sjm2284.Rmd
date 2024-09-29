@@ -34,14 +34,20 @@ Loading the dataset, cleaning names and selecting columns, converting character 
 
 This dataset contains the variables  station name, station location, train route number, routes,line, entrance type, entry, ada, station lat, and station long. I cleaned my data by using clean names to fix the variable names, relocated the order of my variables for legibility, selected my columns/ data of interest, mutated the character variables from entry to logical, mutates the names of the routes as characters because it wasn't allowing me to run the pivot function , then used the pivot_longer to tidy the data and combine route numbers to one column  and assign the routes their own column with the station, and relocated again for legibility.  Data is now tidy.
 
-counting distinct 
+
+counting distinct , ada, proportion of station entrances/ exits without vending
 
 ```{r}
 count(distinct(NYC_transit, station_name,line))
 
+count(filter(NYC_transit, ada == TRUE))
+
+
 ```
 
-
+* There are 465 distinct stations.
+* There are 1,616 stations that are ADA compliant. 
+*
 
 
 

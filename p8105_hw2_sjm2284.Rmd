@@ -79,7 +79,9 @@ mister_wheel_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                range= "A2:N586",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
-                            mutate(sports_balls = as.integer(round(sports_balls))) 
+                            mutate(sports_balls = as.integer(round(sports_balls))) %>% 
+                            mutate(year = as.character(year)) %>% 
+                            mutate(trash = "mister_trash")
                         
 ```
 
@@ -93,7 +95,9 @@ professor_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                skip = 1,
                                range= "A2:M108",
                                na = c("NA", ".", "")) %>% 
-                            janitor::clean_names() 
+                            janitor::clean_names() %>% 
+                            mutate(year = as.character(year)) %>% 
+                            mutate(trash = "professor_trash")
 
 
 ```
@@ -107,11 +111,22 @@ gwynnda_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                skip = 1,
                                range= "A2:L157",
                                na = c("NA", ".", "")) %>% 
-                            janitor::clean_names() 
+                            janitor::clean_names() %>% 
+                            mutate(year = as.character(year)) %>% 
+                            mutate(trash = "gwynnda_trash")
 
 
 ```
 
+
+```{r}
+
+trash_wheel_tidy = 
+  bind_rows(professor_trash, gwynnda_trash, mister_wheel_data) %>% 
+  janitor::clean_names() 
+
+
+```
 
 
 

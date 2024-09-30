@@ -28,7 +28,6 @@ library(readxl)
     route1:route11,
     names_to = "route_number",
     values_to = "route_name",
-    values_drop_na = TRUE
   ) %>% 
   relocate(station_name,station_location,route_number, route_name,line,entrance_type, entry, ada,vending)
 
@@ -41,29 +40,35 @@ This dataset contains the variables  station name, station location, train route
 ```{r, counting}
 count(distinct(NYC_transit, station_name,line))
 
-count(filter(NYC_transit, ada == TRUE))
+transit_entry = 
+  NYC_transit %>% 
+  filter(ada == TRUE) %>% 
+  select(station_name, line) %>% 
+  distinct()
 
-
-count(filter(NYC_transit, entry == TRUE, vending == FALSE))
+transit_entry = NYC_transit %>% 
+  filter( vending == "FALSE") %>% 
+  pull(entry) %>% 
+  mean()
 
 A_train =
   NYC_transit %>% 
   filter(route_name == "A") %>% 
-  distinct(station_name) 
+  distinct(station_name, line) 
 nrow(A_train)
 
 A_train_ada =
   NYC_transit %>% 
   filter(route_name == "A", ada== TRUE) %>% 
-  distinct(station_name) 
+  distinct(station_name, line) 
 nrow(A_train_ada)
  
 ```
 
 * There are 465 distinct stations.
-* There are 1,616 stations that are ADA compliant. 
-* There are a total of 139 stations entrances/ exits without vending that allow entrance, its proportion is 1. 
-* There are 56 stations that serve the A train, and 16 are ADA compliant. 
+* There are 84 stations that are ADA compliant. 
+* There proportion of entrances/ exits without vending that allow entrance, is  0.377. 
+* There are 60 stations that serve the A train, and 17 are ADA compliant. 
 
 
 ## Probem 2
@@ -131,12 +136,14 @@ nrow(trash_wheel_tidy)
 ncol(trash_wheel_tidy)
 summary(trash_wheel_tidy)
 
+rowSums(is.na(trash_wheel_tidy))
+
 # with na.omit 
 
 trash_wheel_tidy_omit =
    bind_rows(professor_trash, gwynnda_trash, mister_wheel_data) %>% 
   janitor::clean_names() %>% 
-  na.omit
+  drop_na()
   
 nrow(trash_wheel_tidy_omit)
 ncol(trash_wheel_tidy_omit)
@@ -151,7 +158,7 @@ total_weight_prof_omit =  trash_wheel_tidy_omit %>%
                      summarise(total_weight = sum(weight_tons, na.rm = TRUE))
 
 print(total_weight_prof_omit)
-#with ommitted data total weight is 0 because professor_trash is not in this dataset with omitted data for removing info that does not have trash specific data.
+#with omitted data total weight is 0 because professor_trash is not in this dataset with omitted data for removing info that does not have trash specific data.
 
 
 total_weight_prof =  trash_wheel_tidy %>% 
@@ -183,7 +190,6 @@ bakers_df =
   separate(baker_name, into = c("first_name", "last_name"), sep = " ") %>% 
   select(- last_name) %>% 
   rename(bakers = first_name)
-  
 ```
 
 
@@ -193,7 +199,6 @@ bakes_df =
   read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
   rename(bakers = baker)
-
 ```
 
 
@@ -203,7 +208,7 @@ results_df =
   read_csv("./data/results.csv", skip = 3, col_names = FALSE,na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
   rename(series = x1,episode = x2, baker = x3, technical = x4, result = x5, ) %>% 
-  rename( bakers = baker)
+  rename( bakers = baker) 
 
 ```
 
@@ -212,6 +217,19 @@ Merging the datasets
 
 ```{r, merged_bakers}
 
+# checking for discrepancy 
+
+anti_join(bakers_df, bakes_df, by = join_by(bakers))
+
+anti_join(bakers_df, results_df, by = c("bakers"))
+
+
+GBB_merged = 
+  full_join(bakers_df, bakes_df, results_df, by = "bakers", relationship = "many-to-many")
+
+
+GBB_merged_er = 
+  left_join(bakers_df, bakes_df, by = "bakers")  #many to many
 
 ```
 

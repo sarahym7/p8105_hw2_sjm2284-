@@ -161,10 +161,17 @@ total_weight_prof =  trash_wheel_tidy %>%
 print(total_weight_prof)
 
 
+total_cigs_gwn =  trash_wheel_tidy %>% 
+                     filter(trash == "gwynnda_trash", year == 2022, month == "June") %>% 
+                     summarise(cigarette_butts = sum(cigarette_butts, na.rm = TRUE))
+print(total_cigs_gwn)
+
 ```
 
 
-* The total weight of trash collected by Professor trash wheel was 210.11 tons (without entire binded dataset omitted). With the omitted dataset professor trash collected 0 tons. 
+* The total weight of trash collected by Professor trash wheel was 210.11 tons (without entire binded dataset omitted). With the omitted dataset professor trash collected 0 tons.
+*In the month of June 2022 Gwynnda collected 0 cigarette butts. 
+
 
 
 

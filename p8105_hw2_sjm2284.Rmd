@@ -80,9 +80,9 @@ mister_wheel_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
                             mutate(sports_balls = as.integer(round(sports_balls))) %>% 
-                            mutate(year = as.character(year)) %>% 
-                            mutate(trash = "mister_trash")
-                        
+                            mutate(year = as.numeric(year)) %>% 
+                            mutate(trash = "mister_trash") %>% 
+                            na.omit()
 ```
 
 
@@ -96,8 +96,9 @@ professor_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                range= "A2:M108",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
-                            mutate(year = as.character(year)) %>% 
-                            mutate(trash = "professor_trash")
+                            mutate(year = as.numeric(year)) %>% 
+                            mutate(trash = "professor_trash") %>% 
+                            na.omit()
 
 
 ```
@@ -112,8 +113,9 @@ gwynnda_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                range= "A2:L157",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
-                            mutate(year = as.character(year)) %>% 
-                            mutate(trash = "gwynnda_trash")
+                            mutate(year = as.numeric(year)) %>% 
+                            mutate(trash = "gwynnda_trash") %>% 
+                            na.omit()
 
 
 ```
@@ -125,8 +127,22 @@ trash_wheel_tidy =
   bind_rows(professor_trash, gwynnda_trash, mister_wheel_data) %>% 
   janitor::clean_names() 
 
+nrow(trash_wheel_tidy)
+ncol(trash_wheel_tidy)
+summary(trash_wheel_tidy)
 
+# with na.omit 
+
+trash_wheel_tidy_omit =
+   bind_rows(professor_trash, gwynnda_trash, mister_wheel_data) %>% 
+  janitor::clean_names() %>% 
+  na.omit
+  
+nrow(trash_wheel_tidy_omit)
+ncol(trash_wheel_tidy_omit)
+summary(trash_wheel_tidy_omit)
 ```
+In this dataset we have the variables dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of 845 observations (rows) and 15 columns without omitted data and a total of 584 rows (observations) and  15 columns with omitted data. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to numeric and get the mean years, committed data is 2018 and non- omitted is 2019. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
 
 
 

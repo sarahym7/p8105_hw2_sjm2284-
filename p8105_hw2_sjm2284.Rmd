@@ -9,6 +9,7 @@ Libraries Used for this HW
 ```{r message=FALSE}
 library(tidyverse)
 library(tidyr)
+library(readxl)
 ```
 
 ## Problem 1
@@ -67,6 +68,13 @@ nrow(A_train_ada)
 
 ## Probem 2
 
+
+Impporting and reading the dataset
+```{r}
+
+mister_wheel_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx")
+
+```
 
 
 

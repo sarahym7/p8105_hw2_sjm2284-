@@ -211,17 +211,20 @@ print(results)
 
 ```{r, views}
 views = 
-  read_csv("./data/viewers.csv",na = c("NA", ".", "")) %>% 
+  read_csv("./data/viewers.csv",na = c("NA", ".", ""))  %>% 
   janitor::clean_names() %>% 
-  head(10) %>% 
-   mutate(across(c(series_1:series_10), as.numeric))
+  rename( season_1 = series_1, season_2 = series_2, season_3 = series_3, season_4 = series_4, season_5 = series_5, season_6 = series_6, season_7 = series_7, season_8 = series_8, season_9 = series_9, season_10 = series_10) %>% 
+  head(10)
+ 
 
+mean(pull(views, season_1), na.rm = TRUE)
+mean(pull(views, season_5), na.rm = TRUE)
 
 
 ```
 
-
-
+* The average viewership in season 1 was 2.77 
+* The average viewership in season 5 was 10.0393
 
 
 

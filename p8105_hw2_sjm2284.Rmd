@@ -170,8 +170,10 @@ print(total_cigs_gwn)
 
 
 * The total weight of trash collected by Professor trash wheel was 210.11 tons (without entire binded dataset omitted). With the omitted dataset professor trash collected 0 tons.
-*In the month of June 2022 Gwynnda collected 0 cigarette butts. 
+* In the month of June 2022 Gwynnda collected 0 cigarette butts. 
 
+
+## Problem 3
 
 
 

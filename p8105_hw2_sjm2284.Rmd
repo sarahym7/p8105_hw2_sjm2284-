@@ -65,6 +65,8 @@ nrow(A_train_ada)
 * There are 56 stations that serve the A train, and 16 are ADA compliant. 
 
 
+## Probem 2
+
 
 
 

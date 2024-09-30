@@ -144,9 +144,27 @@ summary(trash_wheel_tidy_omit)
 ```
 In this dataset we have the variables dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of 845 observations (rows) and 15 columns without omitted data and a total of 584 rows (observations) and  15 columns with omitted data. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to numeric and get the mean years, committed data is 2018 and non- omitted is 2019. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
 
+```{r}
+
+total_weight_prof_omit =  trash_wheel_tidy_omit %>% 
+                     filter(trash == "professor_trash") %>% 
+                     summarise(total_weight = sum(weight_tons, na.rm = TRUE))
+
+print(total_weight_prof_omit)
+#with ommitted data total weight is 0 because professor_trash is not in this dataset with omitted data for removing info that does not have trash specific data.
 
 
+total_weight_prof =  trash_wheel_tidy %>% 
+                     filter(trash == "professor_trash") %>% 
+                     summarise(total_weight = sum(weight_tons, na.rm = TRUE))
 
+print(total_weight_prof)
+
+
+```
+
+
+* The total weight of trash collected by Professor trash wheel was 210.11 tons (without entire binded dataset omitted). With the omitted dataset professor trash collected 0 tons. 
 
 
 

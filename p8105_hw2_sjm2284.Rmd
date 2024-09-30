@@ -193,6 +193,7 @@ bakes =
   read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names()
 
+print(bakes)
 ```
 
 
@@ -206,6 +207,15 @@ print(results)
 
 ```
 
+
+
+```{r, views}
+views = 
+  read_csv("./data/viewers.csv",na = c("NA", ".", "")) %>% 
+  janitor::clean_names() 
+
+
+```
 
 
 

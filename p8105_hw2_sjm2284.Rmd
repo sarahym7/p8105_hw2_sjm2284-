@@ -176,38 +176,48 @@ print(total_cigs_gwn)
 ## Problem 3
 
 
-```{r}
-bakers = 
+```{r, bakers}
+bakers_df = 
   read_csv("./data/bakers.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
   separate(baker_name, into = c("first_name", "last_name"), sep = " ") %>% 
   select(- last_name) %>% 
-  rename(baker = first_name)
+  rename(bakers = first_name)
   
 ```
 
 
 
 ```{r, bakes}
-bakes = 
+bakes_df = 
   read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  rename(bakers = baker)
 
-print(bakes)
 ```
 
 
 ```{r, results}
-results = 
+
+results_df = 
   read_csv("./data/results.csv", skip = 3, col_names = FALSE,na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
-  rename(series = x1,episode = x2, baker = x3, technical = x4, result = x5 )
-
-print(results)
+  rename(series = x1,episode = x2, baker = x3, technical = x4, result = x5, ) %>% 
+  rename( bakers = baker)
 
 ```
 
 
+Merging the datasets
+
+```{r, merged_bakers}
+
+
+```
+
+
+
+## problem 3, part 2 
 
 ```{r, views}
 views = 

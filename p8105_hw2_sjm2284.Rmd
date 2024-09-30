@@ -15,7 +15,7 @@ library(readxl)
 ## Problem 1
 
 
-```{r message=FALSE}
+```{r, cleaning_nyc, message=FALSE}
  NYC_transit =
   read_csv("./data/NYC_Transit_Subway_Entrance_AND_EXIT_DATA.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
@@ -38,7 +38,7 @@ This dataset contains the variables  station name, station location, train route
 
 
 
-```{r}
+```{r, counting}
 count(distinct(NYC_transit, station_name,line))
 
 count(filter(NYC_transit, ada == TRUE))
@@ -69,8 +69,9 @@ nrow(A_train_ada)
 ## Probem 2
 
 
-Impporting and reading the dataset
-```{r}
+Importing and reading the dataset
+
+```{r, mister_trash}
 
 mister_wheel_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
                                sheet=1,
@@ -85,7 +86,31 @@ mister_wheel_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
 
 
 
+```{r, professor_trash}
 
+professor_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
+                               sheet=2,
+                               skip = 1,
+                               range= "A2:M108",
+                               na = c("NA", ".", "")) %>% 
+                            janitor::clean_names() 
+
+
+```
+
+
+
+```{r, gwynnda_sheet}
+
+gwynnda_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
+                               sheet=4,
+                               skip = 1,
+                               range= "A2:L157",
+                               na = c("NA", ".", "")) %>% 
+                            janitor::clean_names() 
+
+
+```
 
 
 

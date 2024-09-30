@@ -176,6 +176,28 @@ print(total_cigs_gwn)
 ## Problem 3
 
 
+```{r}
+bakers = 
+  read_csv("./data/bakers.csv", na = c("NA", ".", "")) %>% 
+  janitor::clean_names() %>% 
+  separate(baker_name, into = c("first_name", "last_name"), sep = " ") %>% 
+  select(- last_name) %>% 
+  rename(baker = first_name)
+  
+
+bakes = 
+  read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
+  janitor::clean_names()
+
+
+
+results = 
+  read_csv("./data/results.csv", skip = 3, na = c("NA", ".", "")) %>% 
+  janitor::clean_names()
+
+```
+
+
 
 
 

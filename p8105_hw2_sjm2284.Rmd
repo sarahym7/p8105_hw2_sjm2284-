@@ -212,7 +212,10 @@ print(results)
 ```{r, views}
 views = 
   read_csv("./data/viewers.csv",na = c("NA", ".", "")) %>% 
-  janitor::clean_names() 
+  janitor::clean_names() %>% 
+  head(10) %>% 
+   mutate(across(c(series_1:series_10), as.numeric))
+
 
 
 ```

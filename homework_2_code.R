@@ -1,11 +1,11 @@
 ---
-title: "Homework 2"
+  title: "Homework 2"
 author: "Sarahy Martinez"
 date: "09-29-2024"
 output: github_document
 ---
-
-Libraries Used for this HW
+  
+  Libraries Used for this HW
 ```{r message=FALSE}
 library(tidyverse)
 library(tidyr)
@@ -16,7 +16,7 @@ library(readxl)
 
 
 ```{r, cleaning_nyc, message=FALSE}
- NYC_transit =
+NYC_transit =
   read_csv("./data/NYC_Transit_Subway_Entrance_AND_EXIT_DATA.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
   relocate(line:entry, ada,vending) %>% 
@@ -162,6 +162,68 @@ print(total_cigs_gwn)
 
 ## Problem 3
 
+
+```{r, bakers}
+bakers_dfs = 
+  read_csv("./data/bakers.csv", na = c("NA", ".", "")) %>% 
+  janitor::clean_names() %>% 
+  separate(baker_name, into = c("first_name", "last_name"), sep = " ") %>% 
+  select(- last_name) %>% 
+  rename(bakers = first_name, season = series)
+
+```
+
+
+
+```{r, bakes}
+bakes_dfs = 
+  read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
+  janitor::clean_names() %>% 
+  rename(bakers = baker, season = series) %>% 
+  pivot_wider(
+    names_from = "bakers",
+    values_from = "episode"
+  )
+
+```
+
+
+```{r, results}
+
+results_dfs = 
+  read_csv("./data/results.csv", skip = 3, col_names = FALSE,na = c("NA", ".", "")) %>% 
+  janitor::clean_names() %>% 
+  rename(series = x1,episode = x2, baker = x3, technical = x4, result = x5, ) %>% 
+  rename( bakers = baker, season = series) %>% 
+   pivot_wider(
+    names_from = "bakers",
+    values_from = "result"
+  )
+
+```
+
+
+Merging the datasets
+
+```{r, merged_bakers}
+
+# checking for discrepancy 
+
+anti_join(bakers_dfs, bakes_dfs, by = join_by(season))
+
+anti_join(bakers_df, results_df, by = c("bakers"))
+
+
+GBB_merged = 
+  left_join(bakers_dfs, bakes_dfs, by = "season")
+
+
+GBB_merged_er = 
+  left_join(bakers_df, bakes_df, by = "bakers")  #many to many
+
+```
+
+
 ```{r, original}
 
 
@@ -170,28 +232,26 @@ bakers_df =
   janitor::clean_names() %>% 
   separate(baker_name, into = c("first_name", "last_name"), sep = " ") %>% 
   select(- last_name) %>% 
-  rename(bakers = first_name) %>% 
-  drop_na()
+  rename(bakers = first_name) 
 
 bakes_df = 
   read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
-  rename(bakers = baker) %>% 
-  drop_na()
+  rename(bakers = baker)
 
 results_df = 
   read_csv("./data/results.csv", skip = 3, col_names = FALSE,na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
   rename(series = x1,episode = x2, baker = x3, technical = x4, result = x5, ) %>% 
-  rename( bakers = baker) %>% 
-  drop_na()
+  rename( bakers = baker) 
+
+
+GBB_merged = 
+  left_join(bakers_df, bakes_df, results_df, by = "bakers", relationship = "many-to-many")
 
 
 GBB_merged_er = 
-  full_join(results_df, bakes_df, by = c("bakers", "series", "episode")) %>% 
-  full_join(x= ., bakers_df, by =c("series","bakers"))
-
-
+  left_join(distinct(bakers_df, bakes_df, by = "bakers")) 
 
 ```
 
@@ -214,10 +274,6 @@ mean(pull(views, season_5), na.rm = TRUE)
 
 * The average viewership in season 1 was 2.77 
 * The average viewership in season 5 was 10.0393
-
-
-
-
 
 
 

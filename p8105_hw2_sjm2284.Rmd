@@ -78,7 +78,7 @@ Importing and reading the dataset
 
 ```{r, mister_trash}
 
-mister_wheel_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
+mister_trash_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
                                sheet=1,
                                skip = 1,
                                range= "A2:N586",
@@ -86,8 +86,7 @@ mister_wheel_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                             janitor::clean_names() %>% 
                             mutate(sports_balls = as.integer(round(sports_balls))) %>% 
                             mutate(year = as.numeric(year)) %>% 
-                            mutate(trash = "mister_trash") %>% 
-                            na.omit()
+                            mutate(trash = "mister_trash") 
 ```
 
 
@@ -102,8 +101,7 @@ professor_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
                             mutate(year = as.numeric(year)) %>% 
-                            mutate(trash = "professor_trash") %>% 
-                            na.omit()
+                            mutate(trash = "professor_trash") 
 
 
 ```
@@ -119,9 +117,8 @@ gwynnda_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
                             mutate(year = as.numeric(year)) %>% 
-                            mutate(trash = "gwynnda_trash") %>% 
-                            na.omit()
-
+                            mutate(trash = "gwynnda_trash") 
+                            
 
 ```
 
@@ -129,8 +126,9 @@ gwynnda_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
 ```{r}
 
 trash_wheel_tidy = 
-  bind_rows(professor_trash, gwynnda_trash, mister_wheel_data) %>% 
-  janitor::clean_names() 
+  bind_rows(professor_trash, gwynnda_trash, mister_trash_data) %>% 
+  janitor::clean_names() %>% 
+  select(trash, everything())
 
 nrow(trash_wheel_tidy)
 ncol(trash_wheel_tidy)
@@ -138,28 +136,10 @@ summary(trash_wheel_tidy)
 
 rowSums(is.na(trash_wheel_tidy))
 
-# with na.omit 
-
-trash_wheel_tidy_omit =
-   bind_rows(professor_trash, gwynnda_trash, mister_wheel_data) %>% 
-  janitor::clean_names() %>% 
-  drop_na()
-  
-nrow(trash_wheel_tidy_omit)
-ncol(trash_wheel_tidy_omit)
-summary(trash_wheel_tidy_omit)
 ```
-In this dataset we have the variables dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of 845 observations (rows) and 15 columns without omitted data and a total of 584 rows (observations) and  15 columns with omitted data. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to numeric and get the mean years, committed data is 2018 and non- omitted is 2019. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
+In this dataset we have 15 variables which include dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of 845 observations (rows) and 15 columns. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to numeric and get the mean years, committed data is 2018. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
 
 ```{r}
-
-total_weight_prof_omit =  trash_wheel_tidy_omit %>% 
-                     filter(trash == "professor_trash") %>% 
-                     summarise(total_weight = sum(weight_tons, na.rm = TRUE))
-
-print(total_weight_prof_omit)
-#with omitted data total weight is 0 because professor_trash is not in this dataset with omitted data for removing info that does not have trash specific data.
-
 
 total_weight_prof =  trash_wheel_tidy %>% 
                      filter(trash == "professor_trash") %>% 
@@ -169,15 +149,15 @@ print(total_weight_prof)
 
 
 total_cigs_gwn =  trash_wheel_tidy %>% 
-                     filter(trash == "gwynnda_trash", year == 2022, month == "June") %>% 
+                     filter(trash == "gwynnda_trash", year == "2022", month == "June") %>% 
                      summarise(cigarette_butts = sum(cigarette_butts, na.rm = TRUE))
 print(total_cigs_gwn)
 
 ```
 
 
-* The total weight of trash collected by Professor trash wheel was 210.11 tons (without entire binded dataset omitted). With the omitted dataset professor trash collected 0 tons.
-* In the month of June 2022 Gwynnda collected 0 cigarette butts. 
+* The total weight of trash collected by Professor trash wheel was 216.26 tons. 
+* In the month of June 2022 Gwynnda collected 18,120 cigarette butts. 
 
 
 ## Problem 3

@@ -159,7 +159,7 @@ total_cigs_gwn =  trash_wheel_tidy %>%
 
 ## Problem 3
 
-```{r, original_bakes, eval = FALSE}
+```{r, original_bakes, eval=FALSE}
 
 
 bakers_df = 

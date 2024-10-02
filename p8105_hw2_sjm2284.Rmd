@@ -154,7 +154,7 @@ total_cigs_gwn =  trash_wheel_tidy %>%
 ```
 
 * The total weight of trash collected by Professor trash wheel was `r (total_weight_prof)`. 
-* In the month of June 2022 Gwynnda collected `r (total_cigs_gwn)` cigarette butts. 
+* In the month of June 2022 Gwynnda collected `r options(scipen = 999);total_cigs_gwn` cigarette butts. 
 
 
 ## Problem 3

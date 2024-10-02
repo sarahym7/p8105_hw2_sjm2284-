@@ -85,8 +85,9 @@ mister_trash_data = read_excel("./data/202409 Trash Wheel Collection Data New.xl
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
                             mutate(sports_balls = as.integer(round(sports_balls))) %>% 
-                            mutate(year = as.numeric(year)) %>% 
-                            mutate(trash = "mister_trash") 
+                            mutate(year = as.character(year)) %>% 
+                            mutate(trash = "mister_trash") %>% 
+                            drop_na()
 
 
 ```
@@ -102,8 +103,9 @@ professor_trash = read_excel("./data/202409 Trash Wheel Collection Data New.xlsx
                                range= "A2:M121",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
-                            mutate(year = as.numeric(year)) %>% 
-                            mutate(trash = "professor_trash") 
+                            mutate(year = as.character(year)) %>% 
+                            mutate(trash = "professor_trash") %>% 
+                            drop_na()
 
 
 ```
@@ -118,53 +120,47 @@ gwynnda_trash = read_excel("./data/202409 Trash Wheel Collection Data New.xlsx",
                                range= "A2:L265",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
-                            mutate(year = as.numeric(year)) %>% 
+                            mutate(year = as.character(year)) %>% 
                             mutate(trash = "gwynnda_trash") 
                             
 
 ```
 
 
-```{r}
+```{r, combined, message=FALSE}
 
 trash_wheel_tidy = 
   bind_rows(professor_trash, gwynnda_trash, mister_trash_data) %>% 
   janitor::clean_names() %>% 
   select(trash, everything())
 
-nrow(trash_wheel_tidy)
-ncol(trash_wheel_tidy)
-summary(trash_wheel_tidy)
-
-rowSums(is.na(trash_wheel_tidy))
 
 ```
-In this dataset we have 15 variables which include dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of 1,033 observations (rows) and 15 columns. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to numeric and get the mean years, committed data is 2022. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
 
-```{r}
+In this dataset we have 15 variables which include dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of `r nrow(trash_wheel_tidy)` observations and `r ncol(trash_wheel_tidy)` columns. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to characters. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
+
+```{r, caclulate,message=FALSE}
 
 total_weight_prof =  trash_wheel_tidy %>% 
                      filter(trash == "professor_trash") %>% 
                      summarise(total_weight = sum(weight_tons, na.rm = TRUE))
 
-print(total_weight_prof)
 
 
 total_cigs_gwn =  trash_wheel_tidy %>% 
                      filter(trash == "gwynnda_trash", year == "2022", month == "June") %>% 
-                     summarise(cigarette_butts = sum(cigarette_butts, na.rm = TRUE))
-print(total_cigs_gwn)
+                     summarise(cigarette_butts = sum(cigarette_butts))
 
 ```
 
 
-* The total weight of trash collected by Professor trash wheel was 246.76 tons. 
-* In the month of June 2022 Gwynnda collected 18,120 cigarette butts. 
+* The total weight of trash collected by Professor trash wheel was `r (total_weight_prof)`. 
+* In the month of June 2022 Gwynnda collected `r (total_cigs_gwn` cigarette butts. 
 
 
 ## Problem 3
 
-```{r, original}
+```{r, original_bakes, message=FALSE}
 
 
 bakers_df = 
@@ -200,7 +196,7 @@ GBB_merged_ =
 
 ## problem 3, part 2 
 
-```{r, views}
+```{r, views, message=FALSE}
 views = 
   read_csv("./data/viewers.csv",na = c("NA", ".", ""))  %>% 
   janitor::clean_names() %>% 
@@ -214,8 +210,9 @@ mean(pull(views, season_5), na.rm = TRUE)
 
 ```
 
-* The average viewership in season 1 was 2.77 
-* The average viewership in season 5 was 10.0393
+* The average viewership in season 1 was `r mean(pull(views, season_1), na.rm = TRUE) ` .
+* The average viewership in season 5 was `r mean(pull(views, season_5), na.rm = TRUE)`.
+
 
 
 

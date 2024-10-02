@@ -192,14 +192,15 @@ anti_join(results_df, bakes_df, by = c("bakers", "series", "episode"))
 
 GBB_merged_ = 
   full_join(results_df, bakes_df, by = c("bakers", "series", "episode")) %>% 
-  full_join(x= ., bakers_df, by =c("series","bakers")) 
+  full_join(x= ., bakers_df, by =c("series","bakers")) %>% 
+  select(series, episode, bakers, baker_age, technical,result, baker_occupation, hometown, signature_bake, show_stopper)
 
-write_csv(GBB_merged_,"./data/GBB_updated.csv")
+write_csv(GBB_merged,"./data/GBB_new.csv")
 
 ```
 
 
-## problem 3, part 2 
+## Problem 3, part 2 
 
 ```{r, views, message=FALSE}
 views = 

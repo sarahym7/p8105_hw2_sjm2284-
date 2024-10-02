@@ -191,6 +191,7 @@ anti_join(results_df, bakes_df, by = c("bakers", "series", "episode"))
  
 
 ```
+For each of the datasets I imported them through read_csv and then cleaned the names to follow naming conventions. In the bakers files I split the first and last name because they do not follow normal form and removed the last name since the other datasets do not include them.I then renamed baker to bakers just for legible purposes and noticed that there was a Jo and Joanne, while searching online noticed that is her nickname so I renamed it to Joanne by mutating. Same process follows for the bakes and results except in the results I had to rename my variables by mutating them. I used an antijoin  to note any discepancies and noticed it was Jo, so I changes the names to Joanne, in the other anti-join there seems to be descrepancies but I am assuming its becuase of the occupations not being involved in the results. I then merged my datasets by doing a full join and selected my variables so that they can be arranged in a way that makes sense when reading the CSV.
 
 ```{r, combined, stars}
 
@@ -209,18 +210,19 @@ GBB_merged_star =
    pivot_wider(
     names_from = result,
     values_from = bakers
-  ) %>% 
+  )%>% 
   knitr::kable()
 
 ```
 
+```{r, combined, stars}
 
-For each of the datasets I imported them through read_csv and then cleaned the names to follow naming conventions. In the bakers files I split the first and last name because they do not follow normal form and removed the last name since the other datasets do not include them.I then renamed baker to bakers just for legible purposes and noticed that there was a Jo and Joanne, while searching online noticed that is her nickname so I renamed it to Joanne by mutating. Same process follows for the bakes and results except in the results I had to rename my variables by mutating them. I used an antijoin  to note any discepancies and noticed it was Jo, so I changes the names to Joanne, in the other anti-join there seems to be descrepancies but I am assuming its becuase of the occupations not being involved in the results. I then merged my datasets by doing a full join and selected my variables so that they can be arranged in a way that makes sense when reading the CSV.
+print(GBB_merged_star)
+
+```
 
 
-
-
-Nancy and Nadiya were predictable overall winners because they were STAR BAKERS more than the other contestants. David was a surprise for winning in season 10 since he never was crowned STAR BAKER. 
+Candice and Nadiya were predictable overall winners because they were STAR BAKERS more than once. David was a surprise for winning in season 10 since he never was crowned STAR BAKER. 
 
 ## Problem 3, part 2 
 

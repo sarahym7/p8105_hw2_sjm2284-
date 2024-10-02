@@ -153,9 +153,8 @@ total_cigs_gwn =  trash_wheel_tidy %>%
 
 ```
 
-
 * The total weight of trash collected by Professor trash wheel was `r (total_weight_prof)`. 
-* In the month of June 2022 Gwynnda collected `r (total_cigs_gwn` cigarette butts. 
+* In the month of June 2022 Gwynnda collected `r (total_cigs_gwn)` cigarette butts. 
 
 
 ## Problem 3
@@ -211,7 +210,7 @@ mean(pull(views, season_5), na.rm = TRUE)
 ```
 
 * The average viewership in season 1 was `r mean(pull(views, season_1), na.rm = TRUE) ` .
-* The average viewership in season 5 was `r mean(pull(views, season_5), na.rm = TRUE)`.
+* The average viewership in season 5 was `r mean(pull(views, season_5), na.rm = TRUE)`. 
 
 
 

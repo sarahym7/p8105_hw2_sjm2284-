@@ -12,6 +12,20 @@ library(tidyr)
 library(readxl)
 ```
 
+---
+  title: "Homework 2"
+author: "Sarahy Martinez"
+date: "09-29-2024"
+output: github_document
+---
+  
+  Libraries Used for this HW
+```{r message=FALSE}
+library(tidyverse)
+library(tidyr)
+library(readxl)
+```
+
 ## Problem 1
 
 
@@ -78,15 +92,17 @@ Importing and reading the dataset
 
 ```{r, mister_trash}
 
-mister_trash_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
+mister_trash_data = read_excel("./data/202409 Trash Wheel Collection Data New.xlsx", 
                                sheet=1,
                                skip = 1,
-                               range= "A2:N586",
+                               range= "A2:N653",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
                             mutate(sports_balls = as.integer(round(sports_balls))) %>% 
                             mutate(year = as.numeric(year)) %>% 
                             mutate(trash = "mister_trash") 
+
+
 ```
 
 
@@ -94,10 +110,10 @@ mister_trash_data = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
 
 ```{r, professor_trash}
 
-professor_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
+professor_trash = read_excel("./data/202409 Trash Wheel Collection Data New.xlsx", 
                                sheet=2,
                                skip = 1,
-                               range= "A2:M108",
+                               range= "A2:M121",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
                             mutate(year = as.numeric(year)) %>% 
@@ -110,10 +126,10 @@ professor_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx",
 
 ```{r, gwynnda_sheet}
 
-gwynnda_trash = read_excel("./data/202309 Trash Wheel Collection Data.xlsx", 
+gwynnda_trash = read_excel("./data/202409 Trash Wheel Collection Data New.xlsx", 
                                sheet=4,
                                skip = 1,
-                               range= "A2:L157",
+                               range= "A2:L265",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
                             mutate(year = as.numeric(year)) %>% 
@@ -137,7 +153,7 @@ summary(trash_wheel_tidy)
 rowSums(is.na(trash_wheel_tidy))
 
 ```
-In this dataset we have 15 variables which include dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of 845 observations (rows) and 15 columns. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to numeric and get the mean years, committed data is 2018. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
+In this dataset we have 15 variables which include dumpster, month, year, date, weight_tons, volume_cubic_yards, plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags, wrappers, homes_powered,sports_balls, and trash (to specify from which dataset). There are a total of 1,033 observations (rows) and 15 columns. The datasheets were individually imported, in mister trash I mutated the year and same for the rest due to years being considered as a character in one dataset and the others as numeric so I converted them all to numeric and get the mean years, committed data is 2022. I also cleaned the names for reasonable variable names and mutated again to create a variable name to identify which dataset the trash is from. 
 
 ```{r}
 
@@ -156,73 +172,11 @@ print(total_cigs_gwn)
 ```
 
 
-* The total weight of trash collected by Professor trash wheel was 216.26 tons. 
+* The total weight of trash collected by Professor trash wheel was 246.76 tons. 
 * In the month of June 2022 Gwynnda collected 18,120 cigarette butts. 
 
 
 ## Problem 3
-
-
-```{r, bakers}
-bakers_dfs = 
-  read_csv("./data/bakers.csv", na = c("NA", ".", "")) %>% 
-  janitor::clean_names() %>% 
-  separate(baker_name, into = c("first_name", "last_name"), sep = " ") %>% 
-  select(- last_name) %>% 
-  rename(bakers = first_name, season = series)
-
-```
-
-
-
-```{r, bakes}
-bakes_dfs = 
-  read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
-  janitor::clean_names() %>% 
-  rename(bakers = baker, season = series) %>% 
-  pivot_wider(
-    names_from = "bakers",
-    values_from = "episode"
-  )
-
-```
-
-
-```{r, results}
-
-results_dfs = 
-  read_csv("./data/results.csv", skip = 3, col_names = FALSE,na = c("NA", ".", "")) %>% 
-  janitor::clean_names() %>% 
-  rename(series = x1,episode = x2, baker = x3, technical = x4, result = x5, ) %>% 
-  rename( bakers = baker, season = series) %>% 
-   pivot_wider(
-    names_from = "bakers",
-    values_from = "result"
-  )
-
-```
-
-
-Merging the datasets
-
-```{r, merged_bakers}
-
-# checking for discrepancy 
-
-anti_join(bakers_dfs, bakes_dfs, by = join_by(season))
-
-anti_join(bakers_df, results_df, by = c("bakers"))
-
-
-GBB_merged = 
-  left_join(bakers_dfs, bakes_dfs, by = "season")
-
-
-GBB_merged_er = 
-  left_join(bakers_df, bakes_df, by = "bakers")  #many to many
-
-```
-
 
 ```{r, original}
 
@@ -232,26 +186,28 @@ bakers_df =
   janitor::clean_names() %>% 
   separate(baker_name, into = c("first_name", "last_name"), sep = " ") %>% 
   select(- last_name) %>% 
-  rename(bakers = first_name) 
+  rename(bakers = first_name) %>% 
+  drop_na()
 
 bakes_df = 
   read_csv("./data/bakes.csv", na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
-  rename(bakers = baker)
+  rename(bakers = baker) %>% 
+  drop_na()
 
 results_df = 
   read_csv("./data/results.csv", skip = 3, col_names = FALSE,na = c("NA", ".", "")) %>% 
   janitor::clean_names() %>% 
   rename(series = x1,episode = x2, baker = x3, technical = x4, result = x5, ) %>% 
-  rename( bakers = baker) 
+  rename( bakers = baker) %>% 
+  drop_na()
 
 
-GBB_merged = 
-  left_join(bakers_df, bakes_df, results_df, by = "bakers", relationship = "many-to-many")
+GBB_merged_ = 
+  full_join(results_df, bakes_df, by = c("bakers", "series", "episode")) %>% 
+  full_join(x= ., bakers_df, by =c("series","bakers"))
 
 
-GBB_merged_er = 
-  left_join(distinct(bakers_df, bakes_df, by = "bakers")) 
 
 ```
 
@@ -274,8 +230,4 @@ mean(pull(views, season_5), na.rm = TRUE)
 
 * The average viewership in season 1 was 2.77 
 * The average viewership in season 5 was 10.0393
-
-
-
-
 

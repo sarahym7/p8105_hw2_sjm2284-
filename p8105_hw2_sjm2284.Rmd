@@ -94,7 +94,6 @@ mister_trash_data = read_excel("./data/202409 Trash Wheel Collection Data New.xl
 
 
 
-
 ```{r, professor_trash}
 
 professor_trash = read_excel("./data/202409 Trash Wheel Collection Data New.xlsx", 
@@ -103,9 +102,10 @@ professor_trash = read_excel("./data/202409 Trash Wheel Collection Data New.xlsx
                                range= "A2:M121",
                                na = c("NA", ".", "")) %>% 
                             janitor::clean_names() %>% 
+                            select(- homes_powered) %>% 
                             mutate(year = as.character(year)) %>% 
                             mutate(trash = "professor_trash") %>% 
-                            drop_na()
+                            drop_na(month)
 
 
 ```

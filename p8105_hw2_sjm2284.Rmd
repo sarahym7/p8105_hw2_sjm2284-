@@ -187,7 +187,9 @@ results_df =
 
 anti_join(results_df, bakes_df, by = c("bakers", "series", "episode"))
 
- anti_join(results_df, bakers_df, by = c("series","bakers"))
+anti_join(bakes_df, bakers_df, by = c("series","bakers"))
+
+anti_join(results_df, bakers_df, by = c("series","bakers"))
  
   GBB_merged_ = 
   full_join(results_df, bakes_df, by = c("bakers", "series", "episode")) %>% 
